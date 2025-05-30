@@ -1,0 +1,51 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Дополнительные пользовательские стили */
+html {
+  scroll-behavior: smooth;
+}
+
+@layer components {
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+  
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  
+  .heading-primary {
+    @apply font-playfair text-4xl md:text-5xl font-bold text-coffee-800;
+  }
+  
+  .heading-secondary {
+    @apply font-playfair text-3xl md:text-4xl font-semibold text-coffee-700;
+  }
+  
+  .paragraph {
+    @apply text-coffee-600 leading-relaxed;
+  }
+  
+  .btn {
+    @apply px-6 py-3 rounded-full font-medium transition-all duration-300 inline-block;
+  }
+  
+  .btn-primary {
+    @apply bg-coffee-600 text-white hover:bg-coffee-700 shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply bg-white border-2 border-coffee-500 text-coffee-600 hover:bg-coffee-100;
+  }
+}
+
+.animation-delay-500 {
+  animation-delay: 0.5s;
+}
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
