@@ -21,7 +21,7 @@ const Menu = () => {
   };
 
   return (
-    <section id="menu" className="relative py-20 sm:py-24 lg:py-32 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 overflow-hidden">
+    <section id="menu" className="relative py-12 sm:py-20 lg:py-32 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 overflow-hidden">
       {/* Революционный фон с анимированными слоями */}
       <div className="absolute inset-0">
         {/* Базовые gradients */}
@@ -42,14 +42,14 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Центрированный заголовок с мега-эффектом */}
-        <div className="text-center mb-16 sm:mb-20 lg:mb-24">
-          {/* Floating badge */}
-          <div className="mb-8 sm:mb-10 animate-float-gentle">
+      <div className="container mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
+      {/* Центрированный заголовок с мега-эффектом */}
+      <div className="text-center mb-8 sm:mb-16 lg:mb-24">
+        {/* Floating badge */}
+        <div className="mb-4 sm:mb-8 animate-float-gentle">
             <div className="inline-flex items-center gap-4 group">
               <div className="relative">
-                <span className="inline-flex items-center gap-3 text-amber-800 text-lg sm:text-xl font-bold tracking-wider px-10 py-5 border-3 border-amber-400/50 rounded-full backdrop-blur-2xl bg-gradient-to-r from-white/80 to-amber-100/80 shadow-2xl shadow-amber-500/30 hover:scale-110 transition-all duration-700 group-hover:shadow-amber-500/50">
+                <span className="inline-flex items-center gap-2 text-amber-800 text-sm sm:text-lg font-bold tracking-wider px-4 py-3 sm:px-10 sm:py-5 border-2 sm:border-3 border-amber-400/50 rounded-full backdrop-blur-2xl bg-gradient-to-r from-white/80 to-amber-100/80 shadow-2xl shadow-amber-500/30 hover:scale-110 transition-all duration-700 group-hover:shadow-amber-500/50">
                   <div className="relative">
                     <Coffee className="w-6 h-6 text-amber-600 group-hover:rotate-180 transition-transform duration-1000" />
                     <div className="absolute inset-0 bg-amber-400/30 rounded-full animate-ping"></div>
@@ -68,7 +68,7 @@ const Menu = () => {
           
           {/* Мега заголовок */}
           <div className="relative">
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 sm:mb-8 leading-none">
+            <h2 className="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-black mb-4 sm:mb-6 leading-tight sm:leading-none">
               <span className="relative inline-block">
                 <span className="bg-gradient-to-r from-amber-800 via-orange-700 to-yellow-700 bg-clip-text text-transparent drop-shadow-2xl">
                   Наше меню
@@ -85,29 +85,29 @@ const Menu = () => {
               </div>
             </div>
             
-            <p className="text-xl sm:text-2xl lg:text-3xl text-amber-900/80 max-w-4xl mx-auto leading-relaxed font-light mb-10">
+            <p className="text-base sm:text-xl lg:text-3xl text-amber-900/80 max-w-4xl mx-auto leading-relaxed font-light mb-6 sm:mb-10 px-4 sm:px-0">
               Откройте для себя уникальные вкусы нашего авторского кофе, ароматных чаев и свежей выпечки
             </p>
           </div>
         </div>
           
         {/* Революционные табы категорий с мега-эффектами */}
-        <div className="flex justify-center mb-16 sm:mb-20">
+        <div className="flex justify-center mb-8 sm:mb-16 px-2 sm:px-0">
           <div className="relative group">
             {/* Магический фон для табов */}
             <div className="absolute inset-0 bg-gradient-conic from-amber-500 via-orange-500 to-yellow-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-700 scale-110"></div>
             <div className="absolute inset-0 bg-gradient-radial from-white/40 to-transparent rounded-3xl animate-pulse-slow"></div>
             
-            <div className="relative flex bg-white/90 backdrop-blur-2xl rounded-3xl shadow-2xl p-3 border-2 border-white/50 overflow-hidden">
-              {/* Анимированный фон активной кнопки */}
+            <div className="relative flex bg-white/90 backdrop-blur-2xl rounded-3xl shadow-2xl p-2 sm:p-3 border-2 border-white/50 overflow-hidden">
+              {/* Анимированный фон активной кнопки - только для больших экранов */}
               <div 
-                className={`absolute top-3 bottom-3 bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 rounded-2xl shadow-2xl shadow-amber-500/40 transition-all duration-700 ease-out`}
+                className={`hidden sm:block absolute top-2 bottom-2 bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 rounded-2xl shadow-2xl shadow-amber-500/40 transition-all duration-700 ease-out`}
                 style={{
-                  width: `${100 / categories.length}%`,
-                  left: `${(categories.findIndex(cat => cat.id === activeCategory) * 100) / categories.length}%`
+                  width: `calc(${100 / categories.length}% - 0.5rem)`,
+                  left: `calc(${(categories.findIndex(cat => cat.id === activeCategory) * 100) / categories.length}% + 0.25rem)`
                 }}
               ></div>
-              
+                            
               {categories.map((category, index) => {
                 const IconComponent = category.icon;
                 const isActive = activeCategory === category.id;
@@ -115,14 +115,14 @@ const Menu = () => {
                   <button
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
-                    className={`relative z-10 flex items-center py-5 px-8 sm:px-12 rounded-2xl transition-all duration-500 transform group/tab ${
+                    className={`relative z-10 flex items-center py-3 px-3 sm:py-5 sm:px-8 lg:px-12 rounded-2xl transition-all duration-500 transform group/tab ${
                       isActive 
-                        ? 'text-white scale-105' 
+                        ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 sm:bg-none text-white scale-105 shadow-lg sm:shadow-none' 
                         : 'hover:bg-amber-100/50 text-amber-800 hover:scale-102'
                     }`}
                   >
                     <div className="relative">
-                      <IconComponent className={`w-7 h-7 mr-4 transition-all duration-500 ${
+                      <IconComponent className={`w-5 h-5 sm:w-7 sm:h-7 mr-2 sm:mr-4 transition-all duration-500 ${
                         isActive 
                           ? 'text-white group-hover/tab:rotate-12' 
                           : 'text-amber-600 group-hover/tab:scale-110'
@@ -135,7 +135,7 @@ const Menu = () => {
                         </>
                       )}
                     </div>
-                    <span className="font-bold text-lg sm:text-xl">
+                    <span className="font-bold text-sm sm:text-lg lg:text-xl">
                       {category.name}
                     </span>
                     
@@ -170,7 +170,7 @@ const Menu = () => {
         </div>
           
         {/* Сетка товаров с мега-анимациями */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 lg:gap-12 mb-8 sm:mb-16 px-2 sm:px-0">
           {menuData
             .filter((item) => item.category === activeCategory)
             .map((item, index) => (
@@ -206,7 +206,7 @@ const Menu = () => {
           <div className="absolute inset-0 bg-gradient-conic from-amber-500 via-orange-500 to-yellow-500 rounded-3xl blur-3xl opacity-20 animate-pulse-slow scale-110"></div>
           <div className="absolute inset-0 bg-gradient-radial from-white/30 to-transparent rounded-3xl"></div>
           
-          <div className="relative bg-white/80 backdrop-blur-2xl rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl border-2 border-white/50 max-w-4xl mx-auto overflow-hidden">
+          <div className="relative bg-white/80 backdrop-blur-2xl rounded-3xl p-4 sm:p-8 lg:p-16 shadow-2xl border-2 border-white/50 max-w-4xl mx-auto overflow-hidden">
             {/* Внутренние анимированные элементы */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500"></div>
             <div className="absolute inset-0 bg-gradient-to-br from-amber-50/30 to-orange-50/30 rounded-3xl"></div>
@@ -226,7 +226,7 @@ const Menu = () => {
               </div>
               
               <div className="space-y-6">
-                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-amber-800 via-orange-700 to-yellow-700 bg-clip-text text-transparent">
+                <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black bg-gradient-to-r from-amber-800 via-orange-700 to-yellow-700 bg-clip-text text-transparent">
                   Не можете определиться?
                 </h3>
                 <p className="text-lg sm:text-xl text-amber-700/90 max-w-2xl mx-auto leading-relaxed">
@@ -238,7 +238,7 @@ const Menu = () => {
               <div className="relative">
                 <button
                   onClick={() => setOrderModalOpen(true)}
-                  className="group relative bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 hover:from-amber-600 hover:via-orange-600 hover:to-yellow-600 text-white px-12 py-6 rounded-full font-bold text-xl shadow-2xl hover:shadow-3xl hover:shadow-amber-500/50 transform hover:scale-110 transition-all duration-700 overflow-hidden border-3 border-white/40"
+                  className="group relative bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 hover:from-amber-600 hover:via-orange-600 hover:to-yellow-600 text-white px-6 py-4 sm:px-12 sm:py-6 rounded-full font-bold text-lg sm:text-xl shadow-2xl hover:shadow-3xl hover:shadow-amber-500/50 transform hover:scale-110 transition-all duration-700 overflow-hidden border-3 border-white/40"
                 >
                   {/* Анимированный фон */}
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

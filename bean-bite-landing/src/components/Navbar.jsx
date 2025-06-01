@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 import { useState, useEffect } from 'react';
 import { Menu, X, Coffee, Sparkles, Star } from 'lucide-react';
 import OrderModal from './OrderModal';
@@ -19,6 +18,19 @@ const Navbar = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // Блокируем скролл при открытом мобильном меню
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   // Улучшенное отслеживание скролла с плавными переходами
   useEffect(() => {
@@ -95,7 +107,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed w-full z-50 transition-all duration-1000 ease-out transform ${
+        className={`fixed w-full z-40 transition-all duration-1000 ease-out transform ${
           isScrolled ? 'translate-y-0' : 'translate-y-0'
         }`}
         style={{
@@ -261,7 +273,7 @@ const Navbar = () => {
             <div className="lg:hidden">
               <button 
                 onClick={() => setIsOpen(!isOpen)} 
-                className={`relative p-3 rounded-xl hover:scale-110 transition-all duration-700 ease-out`}
+                className={`relative p-3 rounded-xl hover:scale-110 transition-all duration-700 ease-out z-50`}
                 style={{
                   background: isScrolled 
                     ? `linear-gradient(135deg, 
@@ -285,106 +297,155 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+      </nav>
 
-        {/* Мобильное меню остается без изменений */}
+      {/* Стильное затемнение */}
+      {isOpen && (
         <div 
-          className={`lg:hidden fixed top-0 right-0 h-full w-full max-w-sm bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50/90 backdrop-blur-2xl shadow-2xl z-50 transition-all duration-700 ease-out transform ${
-            isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-          } pt-20 overflow-hidden border-l border-amber-200/50`}
+          className="fixed inset-0 bg-gradient-to-br from-black/60 via-amber-900/20 to-black/60 z-[60] transition-all duration-700 backdrop-blur-sm lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Мобильное меню с исправлениями */}
+      <div 
+        className={`lg:hidden fixed top-0 right-0 h-full w-full max-w-sm z-[70] transition-all duration-700 ease-out transform ${
+          isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        } overflow-hidden`}
+        style={{
+          background: 'linear-gradient(135deg, rgba(254, 248, 224, 0.98), rgba(255, 247, 223, 0.95), rgba(254, 240, 138, 0.92))',
+          backdropFilter: 'blur(20px) saturate(1.5)',
+          WebkitBackdropFilter: 'blur(20px) saturate(1.5)',
+          boxShadow: '-20px 0 60px -10px rgba(245, 158, 11, 0.4), 0 0 0 1px rgba(245, 158, 11, 0.1)',
+          borderLeft: '1px solid rgba(245, 158, 11, 0.2)'
+        }}
+      >
+        {/* Декоративный фон */}
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
+          <div className="absolute top-20 right-10 w-32 h-32 bg-amber-300 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 left-10 w-40 h-40 bg-orange-300 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-yellow-300 rounded-full blur-3xl animate-pulse delay-500"></div>
+        </div>
+
+        {/* Кнопка закрытия */}
+        <button
+          className="absolute top-6 right-6 p-3 rounded-2xl bg-white/90 text-amber-600 hover:bg-amber-100 hover:rotate-90 transition-all duration-700 shadow-lg shadow-amber-500/30 z-10"
+          onClick={() => setIsOpen(false)}
         >
-          {/* Декоративный фон */}
-          <div className="absolute inset-0 opacity-30">
-            <div className="absolute top-20 right-10 w-32 h-32 bg-amber-300 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 left-10 w-40 h-40 bg-orange-300 rounded-full blur-3xl"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-yellow-300 rounded-full blur-3xl"></div>
+          <X size={20} />
+        </button>
+        
+        {/* Содержимое меню */}
+        <div className="relative z-10 flex flex-col pt-20 px-4 h-full overflow-y-auto">
+          {/* Заголовок меню */}
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl font-black text-amber-700 mb-2">Меню навигации</h2>
+            <div className="w-16 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto rounded-full"></div>
           </div>
 
-          <button
-            className="absolute top-6 right-6 p-3 rounded-2xl bg-white/90 text-amber-600 hover:bg-amber-100 hover:rotate-90 transition-all duration-700 shadow-lg shadow-amber-500/30"
-            onClick={() => setIsOpen(false)}
-          >
-            <X size={20} />
-          </button>
+          {/* Навигационные элементы */}
+          {[
+            { id: 'about', label: 'О нас', icon: '🏪' },
+            { id: 'menu', label: 'Меню', icon: '☕' },
+            { id: 'testimonials', label: 'Отзывы', icon: '💬' },
+            { id: 'location', label: 'Контакты', icon: '📍' }
+          ].map((item, index) => (
+            <button 
+              key={item.id}
+              onClick={() => scrollTo(item.id)} 
+              className={`group flex items-center py-4 px-6 mb-3 rounded-2xl font-bold text-lg transition-all duration-700 ease-out transform hover:scale-105 ${
+                activeSection === item.id 
+                  ? 'bg-gradient-to-r from-amber-400 to-orange-400 text-white shadow-xl shadow-amber-500/40' 
+                  : 'text-amber-700 hover:bg-white/80 hover:shadow-lg hover:shadow-amber-500/20 bg-white/60 backdrop-blur-sm'
+              }`}
+              style={{ 
+                animationDelay: `${index * 100}ms`,
+                animation: isOpen ? 'slideInFromRight 0.6s ease-out forwards' : 'none'
+              }}
+            >
+              <span className="text-2xl mr-4 group-hover:scale-125 transition-transform duration-700">{item.icon}</span>
+              <span className="flex-1 text-left">{item.label}</span>
+              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </button>
+          ))}
           
-          <div className="relative z-10 flex flex-col mt-8">
-            {[
-              { id: 'about', label: 'О нас', icon: '🏪' },
-              { id: 'menu', label: 'Меню', icon: '☕' },
-              { id: 'testimonials', label: 'Отзывы', icon: '💬' },
-              { id: 'gallery', label: 'Галерея', icon: '📸' },
-              { id: 'location', label: 'Контакты', icon: '📍' }
-            ].map((item, index) => (
-              <button 
-                key={item.id}
-                onClick={() => scrollTo(item.id)} 
-                className={`group flex items-center py-4 px-6 mx-4 mb-3 rounded-2xl font-bold transition-all duration-700 ease-out transform hover:scale-105 ${
-                  activeSection === item.id 
-                    ? 'bg-gradient-to-r from-amber-400 to-orange-400 text-white shadow-xl shadow-amber-500/40' 
-                    : 'text-amber-700 hover:bg-white/80 hover:shadow-lg hover:shadow-amber-500/20 bg-white/60 backdrop-blur-sm'
-                }`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <span className="text-2xl mr-4 group-hover:scale-125 transition-transform duration-700">{item.icon}</span>
-                <span className="text-lg">{item.label}</span>
-                <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </button>
-            ))}
-            
-            {/* Мобильная кнопка заказа */}
-            <div className="mt-8 px-6">
-              <button 
-                onClick={() => {
-                  setIsOpen(false);
-                  setIsOrderModalOpen(true);
-                }} 
-                className="w-full py-4 text-white font-bold bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 hover:from-amber-600 hover:to-orange-600 rounded-2xl transition-all duration-700 shadow-2xl hover:shadow-2xl hover:shadow-amber-500/50 transform hover:scale-105 relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  <Star className="w-5 h-5 animate-spin" />
-                  ЗАКАЗАТЬ КОФЕ
-                  <Sparkles className="w-4 h-4" />
-                </span>
-              </button>
+          {/* Мобильная кнопка заказа */}
+          <div className="mt-8">
+            <button 
+              onClick={() => {
+                setIsOpen(false);
+                setIsOrderModalOpen(true);
+              }} 
+              className="w-full py-4 text-white font-bold bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 hover:from-amber-600 hover:to-orange-600 rounded-2xl transition-all duration-700 shadow-2xl hover:shadow-2xl hover:shadow-amber-500/50 transform hover:scale-105 relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <Star className="w-5 h-5 animate-spin" />
+                ЗАКАЗАТЬ КОФЕ
+                <Sparkles className="w-4 h-4" />
+              </span>
+            </button>
+          </div>
+          
+          {/* Контактная информация */}
+          <div className="mt-8 py-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-amber-200/50 shadow-lg shadow-amber-500/20">
+            <div className="flex items-center mb-3 px-6">
+              <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-green-500 rounded-full mr-3 animate-pulse"></div>
+              <p className="text-sm font-medium text-amber-800">Работаем: 8:00 - 22:00</p>
             </div>
+            <p className="text-lg font-bold text-amber-700 mb-4 px-6">+7 (343) 123-45-67</p>
             
-            {/* Контактная информация */}
-            <div className="mt-8 px-6 py-6 bg-white/80 backdrop-blur-sm rounded-2xl mx-4 border border-amber-200/50 shadow-lg shadow-amber-500/20">
-              <div className="flex items-center mb-3">
-                <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-green-500 rounded-full mr-3 animate-pulse"></div>
-                <p className="text-sm font-medium text-amber-800">Работаем: 8:00 - 22:00</p>
-              </div>
-              <p className="text-lg font-bold text-amber-700 mb-4">+7 (343) 123-45-67</p>
-              
-              {/* Социальные сети */}
-              <div className="flex space-x-3">
-                {['instagram', 'facebook', 'telegram'].map((social, index) => (
-                  <a 
-                    key={social}
-                    href="#" 
-                    className="p-3 rounded-xl bg-gradient-to-br from-amber-400 to-orange-400 text-white hover:from-amber-500 hover:to-orange-500 transition-all duration-700 transform hover:scale-110 hover:-rotate-12 shadow-lg shadow-amber-500/30"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <div className="w-5 h-5 bg-white/20 rounded"></div>
-                  </a>
-                ))}
-              </div>
+            {/* Социальные сети */}
+            <div className="flex justify-center space-x-3 px-6">
+              {[
+                { name: 'vk', src: '/images/vk.png', url: 'https://vk.com' },
+                { name: 'instagram', src: '/images/inst.png', url: 'https://instagram.com' },
+                { name: 'telegram', src: '/images/tg.png', url: 'https://t.me' }
+              ].map((social, index) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  className="relative p-3 rounded-xl bg-gradient-to-br from-amber-400 to-orange-400 text-white hover:from-amber-500 hover:to-orange-500 transition-all duration-500 ease-out transform hover:scale-110 hover:-rotate-6 shadow-lg shadow-amber-500/30 group overflow-hidden"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                  onClick={(e) => {
+                    // Optional: Prevent default if you want to add custom click behavior
+                    // e.preventDefault();
+                    // Add click animation trigger (e.g., ripple effect)
+                    const ripple = document.createElement('span');
+                    ripple.className =
+                      'absolute inset-0 bg-white/40 opacity-0 animate-ripple rounded-xl pointer-events-none';
+                    e.currentTarget.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600); // Remove ripple after animation
+                  }}
+                >
+                  {/* Icon */}
+                  <div className="w-6 h-6 flex items-center justify-center relative z-10">
+                    <img
+                      src={social.src}
+                      alt={`${social.name} icon`}
+                      className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-12"
+                    />
+                  </div>
+                  {/* Glow Effect */}
+                  <div className="absolute inset-0 bg-amber-300/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl blur-md"></div>
+                  {/* Ripple Effect on Click */}
+                  <div className="absolute inset-0 bg-white/30 opacity-0 group-hover:opacity-20 transition-opacity duration-500 transform -skew-x-12"></div>
+                  {/* Particle Sparks on Hover */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    <span className="absolute top-0 left-0 w-1.5 h-1.5 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-80 group-hover:animate-spark delay-100"></span>
+                    <span className="absolute bottom-0 right-0 w-1 h-1 bg-orange-300 rounded-full opacity-0 group-hover:opacity-80 group-hover:animate-spark delay-200"></span>
+                    <span className="absolute top-1/2 left-1/2 w-1.2 h-1.2 bg-amber-200 rounded-full opacity-0 group-hover:opacity-80 group-hover:animate-spark delay-300"></span>
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </div>
-        
-        {/* Стильное затемнение */}
-        {isOpen && (
-          <div 
-            className="lg:hidden fixed inset-0 bg-gradient-to-br from-black/60 via-amber-900/20 to-black/60 z-40 transition-all duration-700 backdrop-blur-sm"
-            onClick={() => setIsOpen(false)}
-          ></div>
-        )}
-      </nav>
+      </div>
 
       <OrderModal 
         isOpen={isOrderModalOpen} 
@@ -403,17 +464,67 @@ const Navbar = () => {
             transform: translateX(0);
           }
         }
-        
+
+        @keyframes ripple {
+          0% {
+            opacity: 0.4;
+            transform: scale(0);
+          }
+          50% {
+            opacity: 0.2;
+          }
+          100% {
+            opacity: 0;
+            transform: scale(2.5);
+          }
+        }
+
+        @keyframes spark {
+          0% {
+            opacity: 0.8;
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            opacity: 0.4;
+            transform: translate(var(--spark-x, 10px), var(--spark-y, -10px)) scale(1.5);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(var(--spark-x, 10px), var(--spark-y, -10px)) scale(0.5);
+          }
+        }
+
         .animate-slideIn {
           animation: slideInFromRight 0.6s ease-out forwards;
         }
-        
-        /* Дополнительные стили для плавности */
+
+        .animate-ripple {
+          animation: ripple 0.6s ease-out forwards;
+        }
+
+        .animate-spark {
+          animation: spark 0.8s ease-out forwards;
+        }
+
+        /* Custom spark movement for variety */
+        .group:hover .animate-spark:nth-child(1) {
+          --spark-x: 8px;
+          --spark-y: -6px;
+        }
+        .group:hover .animate-spark:nth-child(2) {
+          --spark-x: -6px;
+          --spark-y: 8px;
+        }
+        .group:hover .animate-spark:nth-child(3) {
+          --spark-x: 4px;
+          --spark-y: 4px;
+        }
+
         * {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
-        
+
         .transition-all {
           transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
